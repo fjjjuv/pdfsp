@@ -1,0 +1,27 @@
+{
+  "spec": "PDFSP/1.0",
+  "target": "sha256:3a7f...",
+  "ops": [
+    {
+      "op": "replace_text",
+      "target": "text:'invoice #42'",
+      "text": "invoice #43"
+    },
+    {
+      "op": "fill_field",
+      "label": "Total",
+      "text": "1 250,00 €"
+    }
+  ],
+  "contract": {
+    "only_touch": ["e12", "e13"]
+  },
+  "verify": {
+    "expect": ["invoice #43"],
+    "absent": ["invoice #42"]
+  },
+  "meta": {
+    "author": "agent-name",
+    "ts": "2026-11-22T15:00:00Z"
+  }
+}
