@@ -20,8 +20,7 @@ A PDFSP patch can be:
 - **rebased** onto a newer revision of the same document;
 - inverted (every op MAY carry its inverse) for rollback.
 
-The format is engine-agnostic. The reference implementation is
-[pdfbadger](https://github.com/fjjjuv/pdfbadger).
+The format is engine-agnostic.
 
 ## 2. Document format
 
