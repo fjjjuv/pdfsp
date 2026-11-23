@@ -1,51 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDFSP Specification v1.0</title>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDFSP — Specification v1.0</title>
 <meta name="description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
 <meta name="keywords" content="PDF, JSON Patch, RFC 6902, scene graph, document editing, AI agents, specification, pdfsp">
 <meta name="author" content="fjjjuv">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://fjjjuv.github.io/pdfsp/">
-<meta property="og:type" content="article">
-<meta property="og:title" content="PDFSP Specification v1.0">
-<meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
-<meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
-<meta property="og:site_name" content="fjjjuv.github.io/pdfsp">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PDFSP Specification v1.0">
-<meta name="twitter:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","programmingLanguage":"JSON","version":"1.0","inLanguage":"en"}
-</script>
-<style>
-:root{--bg:#0d1117;--fg:#e6edf3;--mut:#8b949e;--acc:#58a6ff;--card:#161b22;--bd:#30363d}
-*{box-sizing:border-box}body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
-.wrap{max-width:880px;margin:0 auto;padding:2rem 1.2rem}
-header.top{border-bottom:1px solid var(--bd);padding-bottom:1rem;margin-bottom:2rem}
-h1{font-size:2rem;margin:.2rem 0}h1 .v{color:var(--acc);font-size:1rem;vertical-align:middle}
-.tag{color:var(--mut);font-size:1.05rem}
-nav a{color:var(--acc);text-decoration:none;margin-right:1.2rem}nav a:hover{text-decoration:underline}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
-ul{padding-left:1.2rem}li{margin:.3rem 0}
-table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid var(--bd);padding:.5rem .7rem;text-align:left;vertical-align:top}
-code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em}
-code{background:#1f2630;padding:.1em .35em;border-radius:4px}
-pre{background:#0a0e14;border:1px solid var(--bd);border-radius:8px;padding:1rem;overflow:auto;line-height:1.45}
-pre code{background:none;padding:0}
-a{color:var(--acc)}.mut{color:var(--mut)}footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bd);color:var(--mut);font-size:.85rem}
-.badge{display:inline-block;background:#1f6feb22;color:var(--acc);border:1px solid #1f6feb55;border-radius:999px;padding:.1rem .7rem;font-size:.8rem;margin-right:.4rem}
-h2{margin-top:2.2rem;border-bottom:1px solid var(--bd);padding-bottom:.3rem}
-</style>
-</head>
-<body><div class="wrap">
-<header class="top"><h1>PDFSP — Specification</h1>
-<div class="tag">Version 1.0 · Working Draft · 2026-11-22 · Apache-2.0</div>
-<nav><a href="index.html">Overview</a><a href="spec.html">Specification</a><a href="examples.html">Examples</a><a href="llms.txt">llms.txt</a><a href="https://github.com/fjjjuv/pdfsp">GitHub</a></nav>
-</header>
-<div class="card mut">Normative source: <a href="https://github.com/fjjjuv/pdfsp/blob/main/SPEC.md">SPEC.md</a> on GitHub. This page is a rendered view.</div>
+<meta property="og:type" content="article"><meta property="og:title" content="PDFSP — Specification v1.0">
+<meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902)."><meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="PDFSP — Specification v1.0">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","version":"1.0","inLanguage":"en"}</script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head><body>
+<nav><div class="wrap"><a class="brand" href="index.html"><b>pdfsp/</b>PDFSP</a><div class="spacer"></div><a class="link" href="index.html">Overview</a><a class="link active" href="spec.html">Specification</a><a class="link" href="examples.html">Examples</a><a class="link" href="playground.html">Playground</a><a class="link" href="llms.txt">llms.txt</a><a class="link" href="https://github.com/fjjjuv/pdfsp">GitHub</a><button class="burger" aria-label="menu">≡</button></div></nav>
+<div class="wrap layout">
+<aside class="toc"></aside>
+<article>
+<div class="card mut" style="margin-bottom:20px">Normative source: <a href="https://github.com/fjjjuv/pdfsp/blob/main/SPEC.md">SPEC.md</a> — rendered view, identical content.</div>
 <h1 id="pdfsp-pdf-scene-patch">PDFSP — PDF Scene Patch</h1>
 <p><strong>Version 1.0 (draft) — 2026-11-22</strong>
 Author: fjjjuv — https://github.com/fjjjuv
@@ -296,4 +269,6 @@ never an engine error.</p>
 <hr />
 <p><em>PDFSP is published under Apache-2.0 to maximize adoption. The name
 "PDFSP" is claimed by fjjjuv.</em></p>
-<footer>PDFSP · Specification v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · by <a href="https://github.com/fjjjuv">fjjjuv</a></footer></div></body></html>
+</article></div>
+<footer><div class="wrap">PDFSP · Spec v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · <a href="https://github.com/fjjjuv">fjjjuv</a> · site generated 2026-11-23</div></footer>
+<script src="assets/main.js"></script></body></html>

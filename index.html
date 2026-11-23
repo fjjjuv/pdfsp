@@ -1,56 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF Scene Patch — PDFSP Specification</title>
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDF Scene Patch — PDFSP specification</title>
 <meta name="description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
 <meta name="keywords" content="PDF, JSON Patch, RFC 6902, scene graph, document editing, AI agents, specification, pdfsp">
 <meta name="author" content="fjjjuv">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://fjjjuv.github.io/pdfsp/">
-<meta property="og:type" content="article">
-<meta property="og:title" content="PDF Scene Patch — PDFSP Specification">
-<meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
-<meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
-<meta property="og:site_name" content="fjjjuv.github.io/pdfsp">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PDF Scene Patch — PDFSP Specification">
-<meta name="twitter:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","programmingLanguage":"JSON","version":"1.0","inLanguage":"en"}
-</script>
-<style>
-:root{--bg:#0d1117;--fg:#e6edf3;--mut:#8b949e;--acc:#58a6ff;--card:#161b22;--bd:#30363d}
-*{box-sizing:border-box}body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
-.wrap{max-width:880px;margin:0 auto;padding:2rem 1.2rem}
-header.top{border-bottom:1px solid var(--bd);padding-bottom:1rem;margin-bottom:2rem}
-h1{font-size:2rem;margin:.2rem 0}h1 .v{color:var(--acc);font-size:1rem;vertical-align:middle}
-.tag{color:var(--mut);font-size:1.05rem}
-nav a{color:var(--acc);text-decoration:none;margin-right:1.2rem}nav a:hover{text-decoration:underline}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
-ul{padding-left:1.2rem}li{margin:.3rem 0}
-table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid var(--bd);padding:.5rem .7rem;text-align:left;vertical-align:top}
-code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em}
-code{background:#1f2630;padding:.1em .35em;border-radius:4px}
-pre{background:#0a0e14;border:1px solid var(--bd);border-radius:8px;padding:1rem;overflow:auto;line-height:1.45}
-pre code{background:none;padding:0}
-a{color:var(--acc)}.mut{color:var(--mut)}footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bd);color:var(--mut);font-size:.85rem}
-.badge{display:inline-block;background:#1f6feb22;color:var(--acc);border:1px solid #1f6feb55;border-radius:999px;padding:.1rem .7rem;font-size:.8rem;margin-right:.4rem}
-h2{margin-top:2.2rem;border-bottom:1px solid var(--bd);padding-bottom:.3rem}
-</style>
-</head>
-<body><div class="wrap">
-<header class="top"><h1>PDFSP <span class="v">v1.0</span></h1>
-<div class="tag">PDF Scene Patch</div>
-<p>PDFSP defines a portable, verifiable JSON format for describing mutations of a PDF document's scene graph. A patch describes what to change, not how to change it: it can be applied by any conforming engine, replayed on related documents, rebased onto newer revisions, and inverted for rollback.</p>
-<p><span class="badge">Working Draft</span><span class="badge">Apache-2.0</span><span class="badge">JSON</span></p>
-<nav><a href="index.html">Overview</a><a href="spec.html">Specification</a><a href="examples.html">Examples</a><a href="llms.txt">llms.txt</a><a href="https://github.com/fjjjuv/pdfsp">GitHub</a></nav>
-</header>
-<h2>Key properties</h2>
-<ul><li>Semantic selectors instead of coordinates (page[2], table[0].row[1].cell[0], text:'invoice #42')</li><li>Contracts (only_touch) and post-conditions (verify) built into the format</li><li>Typed issues — engines never fail silently</li><li>Sequential, deterministic op application with best-effort or atomic modes</li><li>Canonical inverses for every op class — rollback without snapshots</li></ul>
-<h2>Related specifications</h2>
-<table><tr><th>Spec</th><th>Full name</th><th>Relation</th></tr><tr><td><a href="https://github.com/fjjjuv/pdfdtp">PDFDTP</a></td><td class="mut">Document Transaction Protocol</td><td>Carries PDFSP ops inside transactions; requires ops per SPEC §3</td></tr><tr><td><a href="https://github.com/fjjjuv/pdfad">PDFAD</a></td><td class="mut">PDF Agent Descriptor</td><td>Declares the id_scheme engines use for element ids</td></tr></table>
-<div class="card"><strong>Reference implementation:</strong> <a href="https://github.com/fjjjuv/pdfbadger">pdfbadger</a> — PDF engine for AI agents implementing this spec.</div>
-<p>Full normative text: <a href="spec.html">specification</a> · runnable examples: <a href="examples.html">examples</a> · machine-readable index for LLMs: <a href="llms.txt">llms.txt</a></p>
-<footer>PDFSP · Specification v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · by <a href="https://github.com/fjjjuv">fjjjuv</a></footer></div></body></html>
+<meta property="og:type" content="article"><meta property="og:title" content="PDF Scene Patch — PDFSP specification">
+<meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902)."><meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="PDF Scene Patch — PDFSP specification">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","version":"1.0","inLanguage":"en"}</script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head><body>
+<nav><div class="wrap"><a class="brand" href="index.html"><b>pdfsp/</b>PDFSP</a><div class="spacer"></div><a class="link active" href="index.html">Overview</a><a class="link" href="spec.html">Specification</a><a class="link" href="examples.html">Examples</a><a class="link" href="playground.html">Playground</a><a class="link" href="llms.txt">llms.txt</a><a class="link" href="https://github.com/fjjjuv/pdfsp">GitHub</a><button class="burger" aria-label="menu">≡</button></div></nav>
+<header class="hero"><div class="wrap">
+<div class="kicker" style="display:none"></div>
+<div class="badge">v1.0 · Working Draft · Apache-2.0</div>
+<h1>PDFSP<br><span class="grad">PDF Scene Patch</span></h1>
+<p class="lede">Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).</p>
+<div class="cta"><a class="btn pri" href="spec.html">Read the spec</a><a class="btn sec" href="playground.html">Try the Patch Explorer</a><a class="btn sec" href="https://github.com/fjjjuv/pdfsp">GitHub ↗</a></div>
+</div></header>
+<section class="wrap"><div class="term"><div class="bar"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span style="margin-left:8px">examples/replace-text.pdfpatch</span></div><pre><code>{
+  "spec": "PDFSP/1.0",
+  "target": "sha256:3a7f...",
+  "ops": [
+    {
+      "op": "replace_text",
+      "target": "text:'invoice #42'",
+      "text": "invoice #43"
+    },
+    {
+      "op": "fill_field",
+      "label": "Total",
+      "text": "1 250,00 €"
+    }
+  ],
+  "contract": {
+    "only_touch": ["e12", "e13"]
+  },
+  "verify": {
+    "expect": ["invoice #43"],
+    "absent": ["invoice #42"]
+  },&nbsp;
+<span class='mut'>…</span></code></pre></div></section>
+<section class="wrap"><h2>Why it exists</h2><p class="mut">PDFSP defines a portable, verifiable JSON format for describing mutations of a PDF document's scene graph. A patch describes what to change, not how to change it: it can be applied by any conforming engine, replayed on related documents, rebased onto newer revisions, and inverted for rollback.</p>
+<h2>Key properties</h2><div class="grid"><div class="card"><h3>Semantic selectors</h3><p>Address elements by page[2], table[0].row[1].cell[0], section['Résumé'].para[1] or text:'invoice #42' — not fragile coordinates.</p></div><div class="card"><h3>Contracts</h3><p>only_touch scopes exactly which ids a patch may mutate; violations abort or report contract_violation.</p></div><div class="card"><h3>Post-conditions</h3><p>verify.expect / verify.absent run after application — the engine reports checks, not vibes.</p></div><div class="card"><h3>Atomic or best-effort</h3><p>meta.atomic: true gives all-or-nothing application; default mode reports every issue and continues.</p></div><div class="card"><h3>Inversion</h3><p>Every op class has a canonical inverse — rollback without snapshots.</p></div><div class="card"><h3>Typed issues</h3><p>bad_op, target_not_found, stale_target, contract_violation… never a silent failure.</p></div></div></section>
+<section class="wrap"><h2>Related specifications</h2><div class="tblwrap"><table><tr><th>Spec</th><th>Full name</th><th>Relation</th></tr><tr><td><a href="https://github.com/fjjjuv/pdfdtp">PDFDTP</a></td><td>Document Transaction Protocol</td><td class="mut">Carries PDFSP ops inside transactions (ops field, SPEC §3).</td></tr><tr><td><a href="https://github.com/fjjjuv/pdfad">PDFAD</a></td><td>PDF Agent Descriptor</td><td class="mut">Declares the id_scheme engines use for element ids (SPEC §5).</td></tr></table></div>
+<div class="card" style="margin-top:20px"><h3>Reference implementation</h3><p><a href="https://github.com/fjjjuv/pdfbadger">pdfbadger</a> — PDF engine for AI agents implementing this spec. Three repos, one suite: patch it, transact it, describe it.</p></div></section>
+<footer><div class="wrap">PDFSP · Spec v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · <a href="https://github.com/fjjjuv">fjjjuv</a> · site generated 2026-11-23</div></footer>
+<script src="assets/main.js"></script></body></html>

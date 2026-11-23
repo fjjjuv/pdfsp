@@ -16,8 +16,8 @@ Version 1.0 (Working Draft), Apache-2.0. Author: fjjjuv. Reference implementatio
 
 ## Related specifications
 
-- [PDFDTP — Document Transaction Protocol](https://github.com/fjjjuv/pdfdtp): Carries PDFSP ops inside transactions; requires ops per SPEC §3
-- [PDFAD — PDF Agent Descriptor](https://github.com/fjjjuv/pdfad): Declares the id_scheme engines use for element ids
+- [PDFDTP — Document Transaction Protocol](https://github.com/fjjjuv/pdfdtp): Carries PDFSP ops inside transactions (ops field, SPEC §3).
+- [PDFAD — PDF Agent Descriptor](https://github.com/fjjjuv/pdfad): Declares the id_scheme engines use for element ids (SPEC §5).
 
 ## Optional
 
