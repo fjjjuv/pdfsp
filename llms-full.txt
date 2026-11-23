@@ -1,8 +1,8 @@
 # PDFSP — PDF Scene Patch
 
-**Version 1.0 (draft) — 2026-11-22**
+**Version 1.0 — 2026-11-22**
 Author: fjjjuv — https://github.com/fjjjuv
-Status: Working Draft
+Status: Stable
 License: Apache License 2.0 — implementations are free.
 
 ---

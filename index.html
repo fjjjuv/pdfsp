@@ -11,14 +11,14 @@
 <meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902)."><meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
 <meta name="twitter:card" content="summary"><meta name="twitter:title" content="PDF Scene Patch — PDFSP specification">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","version":"1.0","inLanguage":"en"}</script>
-<link rel="stylesheet" href="assets/style.css?v=3">
+<link rel="stylesheet" href="assets/style.css?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head><body>
 <nav><div class="wrap"><a class="brand" href="index.html"><b>pdfsp/</b>PDFSP</a><div class="spacer"></div><a class="link active" href="index.html">Overview</a><a class="link" href="spec.html">Specification</a><a class="link" href="examples.html">Examples</a><a class="link" href="playground.html">Playground</a><a class="link" href="llms.txt">llms.txt</a><a class="link" href="https://github.com/fjjjuv/pdfsp">GitHub</a><button class="burger" aria-label="menu">≡</button></div></nav>
 <header class="hero"><div class="wrap">
 <div class="kicker" style="display:none"></div>
-<div class="badge">v1.0 · Working Draft · Apache-2.0</div>
+<div class="badge">v1.0 · Stable · Apache-2.0</div>
 <h1>PDFSP<br><span class="grad">PDF Scene Patch</span></h1>
 <p class="lede">Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).</p>
 <div class="cta"><a class="btn pri" href="spec.html">Read the spec</a><a class="btn sec" href="playground.html">Try the Patch Explorer</a><a class="btn sec" href="https://github.com/fjjjuv/pdfsp">GitHub ↗</a></div>
@@ -50,5 +50,5 @@
 <h2>Key properties</h2><div class="grid"><div class="card"><h3>Semantic selectors</h3><p>Address elements by page[2], table[0].row[1].cell[0], section['Résumé'].para[1] or text:'invoice #42' — not fragile coordinates.</p></div><div class="card"><h3>Contracts</h3><p>only_touch scopes exactly which ids a patch may mutate; violations abort or report contract_violation.</p></div><div class="card"><h3>Post-conditions</h3><p>verify.expect / verify.absent run after application — the engine reports checks, not vibes.</p></div><div class="card"><h3>Atomic or best-effort</h3><p>meta.atomic: true gives all-or-nothing application; default mode reports every issue and continues.</p></div><div class="card"><h3>Inversion</h3><p>Every op class has a canonical inverse — rollback without snapshots.</p></div><div class="card"><h3>Typed issues</h3><p>bad_op, target_not_found, stale_target, contract_violation… never a silent failure.</p></div></div></section>
 <section class="wrap"><h2>Related specifications</h2><div class="tblwrap"><table><tr><th>Spec</th><th>Full name</th><th>Relation</th></tr><tr><td><a href="https://github.com/fjjjuv/pdfdtp">PDFDTP</a></td><td>Document Transaction Protocol</td><td class="mut">Carries PDFSP ops inside transactions (ops field, SPEC §3).</td></tr><tr><td><a href="https://github.com/fjjjuv/pdfad">PDFAD</a></td><td>PDF Agent Descriptor</td><td class="mut">Declares the id_scheme engines use for element ids (SPEC §5).</td></tr></table></div>
 <div class="card" style="margin-top:20px"><h3>Reference implementation</h3><p><a href="https://github.com/fjjjuv/pdfbadger">pdfbadger</a> — PDF engine for AI agents implementing this spec. Three repos, one suite: patch it, transact it, describe it.</p></div></section>
-<footer><div class="wrap">PDFSP · Spec v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · <a href="https://github.com/fjjjuv">fjjjuv</a> · site generated 2026-11-23</div></footer>
+<footer><div class="wrap">PDFSP · Spec v1.0 · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · <a href="https://github.com/fjjjuv">fjjjuv</a> · site generated 2026-11-23</div></footer>
 <script src="assets/main.js"></script></body></html>
