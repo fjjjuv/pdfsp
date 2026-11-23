@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDFSP Specification v1.0</title>
+<meta name="description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
+<meta name="keywords" content="PDF, JSON Patch, RFC 6902, scene graph, document editing, AI agents, specification, pdfsp">
+<meta name="author" content="fjjjuv">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://fjjjuv.github.io/pdfsp/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PDFSP Specification v1.0">
+<meta property="og:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
+<meta property="og:url" content="https://fjjjuv.github.io/pdfsp/">
+<meta property="og:site_name" content="fjjjuv.github.io/pdfsp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PDFSP Specification v1.0">
+<meta name="twitter:description" content="Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"PDF Scene Patch","description":"Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).","author":{"@type":"Person","name":"fjjjuv","url":"https://github.com/fjjjuv"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/fjjjuv/pdfsp","programmingLanguage":"JSON","version":"1.0","inLanguage":"en"}
+</script>
+<style>
+:root{--bg:#0d1117;--fg:#e6edf3;--mut:#8b949e;--acc:#58a6ff;--card:#161b22;--bd:#30363d}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+.wrap{max-width:880px;margin:0 auto;padding:2rem 1.2rem}
+header.top{border-bottom:1px solid var(--bd);padding-bottom:1rem;margin-bottom:2rem}
+h1{font-size:2rem;margin:.2rem 0}h1 .v{color:var(--acc);font-size:1rem;vertical-align:middle}
+.tag{color:var(--mut);font-size:1.05rem}
+nav a{color:var(--acc);text-decoration:none;margin-right:1.2rem}nav a:hover{text-decoration:underline}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0}
+ul{padding-left:1.2rem}li{margin:.3rem 0}
+table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid var(--bd);padding:.5rem .7rem;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em}
+code{background:#1f2630;padding:.1em .35em;border-radius:4px}
+pre{background:#0a0e14;border:1px solid var(--bd);border-radius:8px;padding:1rem;overflow:auto;line-height:1.45}
+pre code{background:none;padding:0}
+a{color:var(--acc)}.mut{color:var(--mut)}footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--bd);color:var(--mut);font-size:.85rem}
+.badge{display:inline-block;background:#1f6feb22;color:var(--acc);border:1px solid #1f6feb55;border-radius:999px;padding:.1rem .7rem;font-size:.8rem;margin-right:.4rem}
+h2{margin-top:2.2rem;border-bottom:1px solid var(--bd);padding-bottom:.3rem}
+</style>
+</head>
+<body><div class="wrap">
+<header class="top"><h1>PDFSP — Specification</h1>
+<div class="tag">Version 1.0 · Working Draft · 2026-11-22 · Apache-2.0</div>
+<nav><a href="index.html">Overview</a><a href="spec.html">Specification</a><a href="examples.html">Examples</a><a href="llms.txt">llms.txt</a><a href="https://github.com/fjjjuv/pdfsp">GitHub</a></nav>
+</header>
+<div class="card mut">Normative source: <a href="https://github.com/fjjjuv/pdfsp/blob/main/SPEC.md">SPEC.md</a> on GitHub. This page is a rendered view.</div>
+<h1 id="pdfsp-pdf-scene-patch">PDFSP — PDF Scene Patch</h1>
+<p><strong>Version 1.0 (draft) — 2026-11-22</strong>
+Author: fjjjuv — https://github.com/fjjjuv
+Status: Working Draft
+License: Apache License 2.0 — implementations are free.</p>
+<hr />
+<h2 id="1-abstract">1. Abstract</h2>
+<p>PDFSP defines a <strong>portable, verifiable JSON format for describing mutations
+of a PDF document's scene graph</strong>. It is the PDF equivalent of JSON Patch
+(RFC 6902): a patch describes <em>what to change</em>, not <em>how to change it</em>.</p>
+<p>A PDFSP patch can be:</p>
+<ul>
+<li>applied to a PDF by any conforming engine;</li>
+<li><strong>replayed</strong> on a different but related document (template batch editing);</li>
+<li><strong>rebased</strong> onto a newer revision of the same document;</li>
+<li>inverted (every op MAY carry its inverse) for rollback.</li>
+</ul>
+<p>The format is engine-agnostic. The reference implementation is
+<a href="https://github.com/fjjjuv/pdfbadger">pdfbadger</a>.</p>
+<h2 id="2-document-format">2. Document format</h2>
+<pre><code class="language-json">{
+  &quot;spec&quot;:    &quot;PDFSP/1.0&quot;,
+  &quot;target&quot;:  &quot;sha256:&lt;hex&gt;&quot;,              // optional: hash of the source file
+  &quot;base&quot;:    &quot;blake3:&lt;scene-root-hash&gt;&quot;,  // optional: scene-graph base hash
+  &quot;ops&quot;:     [ &lt;op&gt;, ... ],
+  &quot;contract&quot;: {                           // optional: formal constraints
+    &quot;only_touch&quot;: [&quot;e12&quot;, &quot;e13&quot;]
+  },
+  &quot;verify&quot;: {                             // optional: post-conditions
+    &quot;expect&quot;: [&quot;text A&quot;],
+    &quot;absent&quot;: [&quot;text B&quot;]
+  },
+  &quot;meta&quot;: {                               // optional provenance
+    &quot;author&quot;: &quot;agent-name&quot;,
+    &quot;ts&quot;:     &quot;2026-11-22T15:00:00Z&quot;
+  }
+}
+</code></pre>
+<p><code>spec</code> is REQUIRED. <code>ops</code> is REQUIRED and non-empty. Everything else is
+OPTIONAL.</p>
+<h2 id="3-targets-semantic-addressing">3. Targets (semantic addressing)</h2>
+<p>Every op addresses elements via a <strong>selector</strong>, not coordinates:</p>
+<table>
+<thead>
+<tr>
+<th>Selector</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"e12"</code></td>
+<td>element id (stable hash, see §5)</td>
+</tr>
+<tr>
+<td><code>"page[2]"</code></td>
+<td>whole page (0-based)</td>
+</tr>
+<tr>
+<td><code>"table[0].row[2].cell[1]"</code></td>
+<td>table element path</td>
+</tr>
+<tr>
+<td><code>"section['Résumé'].para[1]"</code></td>
+<td>named section path</td>
+</tr>
+<tr>
+<td><code>"text:'invoice #42'"</code></td>
+<td>first occurrence of a text search</td>
+</tr>
+<tr>
+<td><code>{"rect": [x0,y0,x1,y1], "page": 0}</code></td>
+<td>coordinate fallback</td>
+</tr>
+</tbody>
+</table>
+<p>Coordinate targets are legal but DISCOURAGED: they break on reflow.
+Engines MUST resolve semantic targets before applying ops.</p>
+<h2 id="4-operations">4. Operations</h2>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th>required fields</th>
+<th>semantics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>replace_text</code></td>
+<td><code>target</code>, <code>text</code></td>
+<td>replace the text of the element</td>
+</tr>
+<tr>
+<td><code>set_textbox</code></td>
+<td><code>target</code>, <code>text</code></td>
+<td>reflow-replace within the element's box</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td><code>target</code></td>
+<td>remove the element from the scene</td>
+</tr>
+<tr>
+<td><code>insert</code></td>
+<td><code>at</code>, <code>element</code></td>
+<td>insert a new element (position anchor)</td>
+</tr>
+<tr>
+<td><code>insert_text</code></td>
+<td><code>page</code>, <code>x</code>, <code>y</code>, <code>text</code></td>
+<td>raw text insertion (legacy/simple ops)</td>
+</tr>
+<tr>
+<td><code>insert_image</code></td>
+<td><code>page</code>, <code>rect</code>, <code>src</code></td>
+<td>image placement</td>
+</tr>
+<tr>
+<td><code>restyle</code></td>
+<td><code>target</code>, <code>role</code></td>
+<td>re-style an element per document DNA</td>
+</tr>
+<tr>
+<td><code>move</code></td>
+<td><code>target</code>, <code>to</code></td>
+<td>relocate element</td>
+</tr>
+<tr>
+<td><code>fill_field</code></td>
+<td><code>label</code>, <code>text</code></td>
+<td>fill a form field or dotted-line field</td>
+</tr>
+</tbody>
+</table>
+<p>Engines MAY ignore unknown ops but MUST report them as issues
+<code>{"kind": "unknown_op", "op": &lt;name&gt;}</code> — never fail silently.</p>
+<h2 id="5-stable-element-ids">5. Stable element ids</h2>
+<p>Element ids SHOULD be content-derived:</p>
+<pre><code>id = &quot;e&quot; + base36( sha1( normalized_pos | style_sig | text_sig ) )
+</code></pre>
+<p>Engines MUST define their id scheme in a <code>PDFAD</code> manifest when present.
+Ids MUST be stable across save/reload of the <em>same</em> element.</p>
+<h2 id="6-contracts">6. Contracts</h2>
+<p><code>contract.only_touch</code> lists element ids the patch is allowed to mutate.
+An engine MUST abort (or report <code>contract_violation</code>) if applying the ops
+would mutate a non-listed element.</p>
+<h2 id="7-verification">7. Verification</h2>
+<p>After application, engines SHOULD evaluate <code>verify.expect</code>/<code>verify.absent</code>
+against the resulting document and return a report:</p>
+<pre><code class="language-json">{&quot;ok&quot;: true, &quot;checks&quot;: [{&quot;expect&quot;: &quot;A&quot;, &quot;ok&quot;: true}],
+ &quot;certificate&quot;: {&quot;touched&quot;: [&quot;e12&quot;], &quot;untouched_changed&quot;: []}}
+</code></pre>
+<h2 id="8-inversion">8. Inversion</h2>
+<p>Every op class has a canonical inverse (e.g. <code>delete</code> ↔ re-insert,
+<code>replace_text</code> ↔ <code>replace_text</code> with old text). A conforming engine
+SHOULD return <code>inverse_ops</code> for any applied patch, enabling rollback
+without snapshots.</p>
+<h2 id="9-errors">9. Errors</h2>
+<p>Engine responses SHOULD carry typed issues:</p>
+<p><code>{kind, msg}</code> with <code>kind</code> in:
+<code>bad_op | unknown_op | missing_fields | target_not_found |
+contract_violation | op_error | stale_target | io_error</code>.</p>
+<h2 id="10-portability">10. Portability</h2>
+<p>A <code>.pdfpatch</code> file (extension <code>.pdfpatch</code>, MIME <code>application/pdfsp+json</code>)
+is a PDFSP document. Patches are portable across documents when element
+ids match OR targets degrade to text/coordinate selectors.</p>
+<h2 id="11-edge-cases-semantics">11. Edge cases &amp; semantics</h2>
+<h3 id="111-application-order">11.1 Application order</h3>
+<p>Ops apply <strong>sequentially in array order</strong>, each op acting on the scene
+produced by the previous ops. There is no implicit reordering,
+parallelism, or sorting by kind. An engine MUST NOT reorder ops to
+"help" the caller — a patch that relies on a different evaluation order
+is malformed.</p>
+<p>Consequence: an <code>insert</code> followed by a <code>restyle</code> MAY address the
+inserted element only if the <code>insert</code> produced a resolvable target for
+it. Selectors are resolved <strong>per op at apply time</strong>, never hoisted.</p>
+<h3 id="112-invalid-targets">11.2 Invalid targets</h3>
+<p>A target that resolves to zero elements yields issue
+<code>target_not_found</code> for that op. This is a <strong>blocking</strong> issue for the op,
+not necessarily for the batch:</p>
+<ul>
+<li>default mode (<strong>best-effort</strong>): the op is skipped, remaining ops
+  continue, and the response reports all issues;</li>
+<li><code>meta.atomic: true</code> (<strong>all-or-nothing</strong>): the first blocking issue
+  aborts the batch, the document is restored to its pre-apply state,
+  and the response reports <code>applied: 0</code> plus the triggering issue.</li>
+</ul>
+<p>Issue kinds are blocking if they mean "this op could not execute":
+<code>bad_op | unknown_op | missing_fields | target_not_found |
+contract_violation | op_error</code>. Kinds describing degraded-but-done
+work (substituted font, painted background, <code>unsupported_content</code>)
+are non-blocking: the op counts as applied.</p>
+<h3 id="113-conflicting-ops-in-one-batch">11.3 Conflicting ops in one batch</h3>
+<p>Two ops addressing the same element are legal and resolve
+sequentially (§11.1). The outcome MUST be deterministic:</p>
+<ul>
+<li><code>replace_text</code> then <code>delete</code> on <code>e12</code> → element deleted, no issue;</li>
+<li><code>delete</code> then any op on <code>e12</code> → the second op yields
+  <code>target_not_found</code> (the element no longer exists);</li>
+<li>two <code>replace_text</code> on the same element → last writer wins.</li>
+</ul>
+<p>Engines MUST NOT silently merge or drop conflicting ops.</p>
+<h3 id="114-stale-targets">11.4 Stale targets</h3>
+<p>Content-derived ids change when the element changes (§5). A patch
+recorded against an older scene therefore legitimately yields
+<code>target_not_found</code> on rebased application. Engines MAY emit
+<code>stale_target</code> instead when they can prove the selector matched an
+element in the recorded base scene but not the current one (e.g. via
+<code>base:</code> hash comparison) — this is strictly more informative and
+preferred when available.</p>
+<h3 id="115-insert-anchors">11.5 <code>insert</code> anchors</h3>
+<p><code>insert.at</code> is one of:</p>
+<table>
+<thead>
+<tr>
+<th>form</th>
+<th>semantics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"e12"</code></td>
+<td>directly after element <code>e12</code> in reading order</td>
+</tr>
+<tr>
+<td><code>"before:e12"</code></td>
+<td>directly before element <code>e12</code></td>
+</tr>
+<tr>
+<td><code>"page[2]"</code></td>
+<td>appended at the end of page 2's flow</td>
+</tr>
+<tr>
+<td><code>{"rect": [...], "page": n}</code></td>
+<td>anchored box (portable, reflow-fragile)</td>
+</tr>
+</tbody>
+</table>
+<p>An <code>insert</code> op MUST report its created element's new id in the
+response (<code>created: ["e31"]</code>) so later ops and the caller can
+reference it.</p>
+<h3 id="116-empty-effective-batch">11.6 Empty effective batch</h3>
+<p>If every op is skipped (all targets unresolved or all unknown), a
+conforming engine still returns a response with <code>applied: 0</code> and the
+full issue list — an empty effective batch is a reportable outcome,
+never an engine error.</p>
+<hr />
+<p><em>PDFSP is published under Apache-2.0 to maximize adoption. The name
+"PDFSP" is claimed by fjjjuv.</em></p>
+<footer>PDFSP · Specification v1.0 (Working Draft) · <a href="https://github.com/fjjjuv/pdfsp/blob/main/LICENSE">Apache-2.0</a> · by <a href="https://github.com/fjjjuv">fjjjuv</a></footer></div></body></html>

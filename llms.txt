@@ -1,0 +1,25 @@
+# PDFSP — PDF Scene Patch
+
+> Portable, verifiable JSON format for mutating a PDF scene graph — the PDF equivalent of JSON Patch (RFC 6902).
+
+PDFSP defines a portable, verifiable JSON format for describing mutations of a PDF document's scene graph. A patch describes what to change, not how to change it: it can be applied by any conforming engine, replayed on related documents, rebased onto newer revisions, and inverted for rollback.
+
+Version 1.0 (Working Draft), Apache-2.0. Author: fjjjuv. Reference implementation: pdfbadger (https://github.com/fjjjuv/pdfbadger).
+
+## Documentation
+
+- [Overview](https://fjjjuv.github.io/pdfsp/): what it is and why
+- [Specification](https://fjjjuv.github.io/pdfsp/spec.html): full normative spec v1.0 (rendered)
+- [Specification source](https://github.com/fjjjuv/pdfsp/blob/main/SPEC.md): raw markdown
+- [Examples](https://fjjjuv.github.io/pdfsp/examples.html): worked example documents
+- [Full spec for LLMs](https://fjjjuv.github.io/pdfsp/llms-full.txt): complete spec text
+
+## Related specifications
+
+- [PDFDTP — Document Transaction Protocol](https://github.com/fjjjuv/pdfdtp): Carries PDFSP ops inside transactions; requires ops per SPEC §3
+- [PDFAD — PDF Agent Descriptor](https://github.com/fjjjuv/pdfad): Declares the id_scheme engines use for element ids
+
+## Optional
+
+- [GitHub repository](https://github.com/fjjjuv/pdfsp): source, issues, releases
+- [Release v1.0.0](https://github.com/fjjjuv/pdfsp/releases/tag/v1.0.0)
