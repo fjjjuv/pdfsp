@@ -4,7 +4,7 @@
 The PDF equivalent of JSON Patch (RFC 6902): a patch describes *what to
 change*, not *how to change it*.
 
-- **Spec:** [SPEC.md](SPEC.md) — version 1.0 (Working Draft)
+- **Spec:** [SPEC.md](SPEC.md) — version 1.0 (Stable)
 - **License:** [Apache-2.0](LICENSE) — implementations are free, including commercial
 - **Reference implementation:** [pdfbadger](https://github.com/fjjjuv/pdfbadger)
 - **Author:** [fjjjuv](https://github.com/fjjjuv)
