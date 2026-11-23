@@ -4,7 +4,7 @@
 
 PDFSP defines a portable, verifiable JSON format for describing mutations of a PDF document's scene graph. A patch describes what to change, not how to change it: it can be applied by any conforming engine, replayed on related documents, rebased onto newer revisions, and inverted for rollback.
 
-Version 1.0 (Stable), Apache-2.0. Author: fjjjuv. Reference implementation: pdfbadger (https://github.com/fjjjuv/pdfbadger).
+Version 1.0 (Stable), Apache-2.0. Author: fjjjuv.
 
 ## Documentation
 
